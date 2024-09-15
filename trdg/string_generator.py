@@ -18,7 +18,7 @@ def create_strings_from_file(filename: str, count: int) -> List[str]:
             raise Exception("No lines could be read in file")
         while len(strings) < count:
             if len(lines) >= count - len(strings):
-                strings.extend(lines[0 : count - len(strings)])
+                strings.extend(lines[0: count - len(strings)])
             else:
                 strings.extend(lines)
 
@@ -133,8 +133,9 @@ def create_strings_randomly(
     for _ in range(0, count):
         current_string = ""
         for _ in range(0, rnd.randint(1, length) if allow_variable else length):
-            seq_len = rnd.randint(min_seq_len, max_seq_len)
-            current_string += "".join([rnd.choice(pool) for _ in range(seq_len)])
+            seq_len = rnd.randint(1, 3)
+            current_string += "".join([rnd.choice(pool)
+                                      for _ in range(seq_len)])
             current_string += " "
         strings.append(current_string[:-1])
     return strings
