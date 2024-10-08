@@ -134,8 +134,12 @@ def create_strings_randomly(
         current_string = ""
         for _ in range(0, rnd.randint(1, length) if allow_variable else length):
             seq_len = rnd.randint(1, 3)
+            random_bar = rnd.uniform(0, 100)
+            if random_bar > 50:
+                current_string = '|'
             current_string += "".join([rnd.choice(pool)
                                       for _ in range(seq_len)])
+
             current_string += " "
         strings.append(current_string[:-1])
     return strings

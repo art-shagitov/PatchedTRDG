@@ -83,10 +83,13 @@ def _generate_horizontal_text(
     stroke_width: int = 0,
     stroke_fill: str = "#282828",
 ) -> Tuple:
-    image_font = ImageFont.truetype(font=font, size=font_size)
+
+    font_size = 32
+    image_font = ImageFont.truetype(font=font, size=64)
 
     space_width = int(get_text_width(image_font, " ") * space_width)
-
+    if font == "/home/artur/TextRecognitionDataGenerator/trdg/fonts/latin/Lato-Bold.ttf" and text[0] != '|':
+        text = "↓" + text
     if word_split:
         splitted_text = []
         for w in text.split(" "):
@@ -126,22 +129,38 @@ def _generate_horizontal_text(
     stroke_c1, stroke_c2 = stroke_colors[0], stroke_colors[-1]
 
     stroke_fill = (
-        rnd.randint(min(stroke_c1[0], stroke_c2[0]), max(stroke_c1[0], stroke_c2[0])),
-        rnd.randint(min(stroke_c1[1], stroke_c2[1]), max(stroke_c1[1], stroke_c2[1])),
-        rnd.randint(min(stroke_c1[2], stroke_c2[2]), max(stroke_c1[2], stroke_c2[2])),
+        rnd.randint(min(stroke_c1[0], stroke_c2[0]),
+                    max(stroke_c1[0], stroke_c2[0])),
+        rnd.randint(min(stroke_c1[1], stroke_c2[1]),
+                    max(stroke_c1[1], stroke_c2[1])),
+        rnd.randint(min(stroke_c1[2], stroke_c2[2]),
+                    max(stroke_c1[2], stroke_c2[2])),
     )
 
     for i, p in enumerate(splitted_text):
-        txt_img_draw.text(
-            (sum(piece_widths[0:i]) + i * character_spacing * int(not word_split), 0),
-            p,
-            fill=fill,
-            font=image_font,
-            stroke_width=stroke_width,
-            stroke_fill=stroke_fill,
-        )
+        if p == "↓":
+            random_offset = 15 + rnd.randint(0, 15)
+            txt_img_draw.text(
+                (sum(piece_widths[0:i]) + random_offset, 0),
+                p,
+                fill=fill,
+                font=image_font,
+                stroke_width=stroke_width,
+                stroke_fill=stroke_fill,
+            )
+        else:
+            txt_img_draw.text(
+                (sum(piece_widths[0:i]) + i *
+                 character_spacing * int(not word_split), 0),
+                p,
+                fill=fill,
+                font=image_font,
+                stroke_width=stroke_width,
+                stroke_fill=stroke_fill,
+            )
         txt_mask_draw.text(
-            (sum(piece_widths[0:i]) + i * character_spacing * int(not word_split), 0),
+            (sum(piece_widths[0:i]) + i *
+             character_spacing * int(not word_split), 0),
             p,
             fill=((i + 1) // (255 * 255), (i + 1) // 255, (i + 1) % 255),
             font=image_font,
